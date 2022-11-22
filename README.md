@@ -134,3 +134,29 @@ logout
 Connection to 35.174.114.195 closed.
 ```
 
+### availability zone 
+
+<img src="avzone.png">
+
+### deploy a sample customer webapp frontend app in aws cloud vm 
+
+<img src="deploy.png">
+
+### after login to vm - steps to perform 
+
+```
+[ec2-user@ip-172-31-33-192 ~]$ history 
+    1  sudo -i
+```
+
+###  install httpd and git to host app 
+
+```
+ 1  yum install git httpd -y 
+    2  history 
+    3  git clone  https://github.com/schoolofdevops/html-sample-app.git
+    4  ls
+    5  cp -rf html-sample-app/*  /var/www/html/
+    6  systemctl start httpd
+    7  ls  /var/www/html/
+```
