@@ -160,3 +160,10 @@ Connection to 35.174.114.195 closed.
     6  systemctl start httpd
     7  ls  /var/www/html/
 ```
+
+### Understanding PAAS 
+
+<img src="paas1.png">
+
+
+
