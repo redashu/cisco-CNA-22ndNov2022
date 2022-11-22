@@ -102,3 +102,35 @@ Run "sudo yum update" to apply all updates.
 [ec2-user@ip-172-31-89-133 ~]$ 
 ```
 
+### lets check it 
+
+```
+fire@ashutoshhs-MacBook-Air ~ % ssh -i Downloads/ashu-cisco-key.pem  ec2-user@35.174.114.195 
+Last login: Tue Nov 22 07:11:01 2022 from 103.59.75.139
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+1 package(s) needed for security, out of 1 available
+Run "sudo yum update" to apply all updates.
+-bash: warning: setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory
+[ec2-user@ip-172-31-89-133 ~]$ 
+[ec2-user@ip-172-31-89-133 ~]$ 
+[ec2-user@ip-172-31-89-133 ~]$ whoami
+ec2-user
+[ec2-user@ip-172-31-89-133 ~]$ uname 
+Linux
+[ec2-user@ip-172-31-89-133 ~]$ uname  -r
+5.10.147-133.644.amzn2.x86_64
+[ec2-user@ip-172-31-89-133 ~]$ sudo -i
+[root@ip-172-31-89-133 ~]# whoami
+root
+[root@ip-172-31-89-133 ~]# exit
+logout
+[ec2-user@ip-172-31-89-133 ~]$ exit
+logout
+Connection to 35.174.114.195 closed.
+```
+
