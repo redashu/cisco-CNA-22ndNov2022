@@ -165,5 +165,72 @@ Connection to 35.174.114.195 closed.
 
 <img src="paas1.png">
 
+## More aBout CNA standards 
+
+<img src="cnastd.png">
+
+### CNA -- scaling and LB 
+
+<img src="lb.png">
+
+### Intro to Microservices -- a relief from Monolith -- Design 
+
+<img src="micro.png">
+
+### Micro services with infra design 
+
+<img src="mcr.png">
+
+### Container intro 
+
+<img src="cont1.png">
+
+### Containers are light weight and super fast 
+
+<img src="cont2.png">
+
+### vm vs containers
+
+<img src="vmcont.png">
+
+## creating a webapp in a container and compare with VM 
+
+### taking sample webapp code 
+
+```
+[ashu@ip-172-31-16-246 ~]$ git clone https://github.com/yenchiah/project-website-template.git
+Cloning into 'project-website-template'...
+remote: Enumerating objects: 1025, done.
+remote: Total 1025 (delta 0), reused 0 (delta 0), pack-reused 1025
+Receiving objects: 100% (1025/1025), 1.64 MiB | 23.97 MiB/s, done.
+Resolving deltas: 100% (632/632), done.
+[ashu@ip-172-31-16-246 ~]$ ls
+project-website-template
+
+```
+
+### lets deploy this code to container 
+
+```
+[ashu@ip-172-31-16-246 ~]$ ls
+project-website-template
+[ashu@ip-172-31-16-246 ~]$ docker  run -itd --name ashuwebc1 -v  ~/project-website-template/:/usr/share/nginx/html -p 1234:80  nginx 
+Unable to find image 'nginx:latest' locally
+latest: Pulling from library/nginx
+a603fa5e3b41: Pull complete 
+c39e1cda007e: Pull complete 
+90cfefba34d7: Pull complete 
+a38226fb7aba: Pull complete 
+62583498bae6: Pull complete 
+9802a2cfdb8d: Pull complete 
+Digest: sha256:e209ac2f37c70c1e0e9873a5f7231e91dcd83fdf1178d8ed36c2ec09974210ba
+Status: Downloaded newer image for nginx:latest
+92aaad48c877c9c0c16b49b14ac3d8713d5758013b83cf0794e5d2e343fc985a
+[ashu@ip-172-31-16-246 ~]$ docker  ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                   NAMES
+92aaad48c877   nginx     "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   0.0.0.0:1234->80/tcp, :::1234->80/tcp   ashuwebc1
+[ashu@ip-172-31-16-246 ~]$ 
+
+```
 
 
