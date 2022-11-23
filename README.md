@@ -165,4 +165,135 @@ Removing login credentials for https://index.docker.io/v1/
 ```
 
 
+## K8s client -- sending Request to control plane 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get  nodes 
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get  nodes   --kubeconfig admin.conf 
+NAME            STATUS   ROLES           AGE   VERSION
+control-plane   Ready    control-plane   35d   v1.25.3
+worker1         Ready    <none>          35d   v1.25.3
+worker2         Ready    <none>          35d   v1.25.3
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+```
+
+### supply admin.conf option 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   cluster-info --kubeconfig admin.conf 
+Kubernetes control plane is running at https://3.111.75.5:6443
+CoreDNS is running at https://3.111.75.5:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+
+```
+
+### fixing the location of k8s cluster conf file 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ cp -v  admin.conf  ~/.kube/config 
+‘admin.conf’ -> ‘/home/ashu/.kube/config’
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  nodes
+NAME            STATUS   ROLES           AGE   VERSION
+control-plane   Ready    control-plane   35d   v1.25.3
+worker1         Ready    <none>          35d   v1.25.3
+worker2         Ready    <none>          35d   v1.25.3
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl cluster-info 
+Kubernetes control plane is running at https://3.111.75.5:6443
+CoreDNS is running at https://3.111.75.5:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
+
+### understanding deployment resources of any app in k8s 
+
+<img src="k8sapp.png">
+
+### creating deployment file and deploy it on k8s cluster 
+
+```
+ kubectl  create deployment  ashuweb-front-end --image=docker.io/dockerashu/ashuapp:v1  --port 80 --dry-run=client -o yaml    >ashu-front-end.yaml
+```
+
+### lets deploy it 
+
+```
+kubectl apply -f ashu-front-end.yaml 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb-front-end   1/1     1            1           65s
+mkjweb-front-end    0/1     1            0           8s
+```
+### checking pod distribution over worker node 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb-front-end   1/1     1            1           65s
+mkjweb-front-end    0/1     1            0           8s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb-front-end   1/1     1            1           82s
+mkjweb-front-end    1/1     1            1           25s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  pods
+NAME                                 READY   STATUS    RESTARTS   AGE
+ashuweb-front-end-656fb5f6d7-sjmmf   1/1     Running   0          2m45s
+atulweb-front-end-dcc5486c8-qmbnd    1/1     Running   0          51s
+mkjweb-front-end-6dbf67bffd-qrxxz    1/1     Running   0          108s
+visweb-frontend-68ff5df788-w68wz     1/1     Running   0          50s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  pods -o wide
+NAME                                 READY   STATUS    RESTARTS   AGE     IP                NODE      NOMINATED NODE   READINESS GATES
+ashuweb-front-end-656fb5f6d7-sjmmf   1/1     Running   0          2m56s   192.168.235.154   worker1   <none>           <none>
+atulweb-front-end-dcc5486c8-qmbnd    1/1     Running   0          62s     192.168.235.155   worker1   <none>           <none>
+mkjweb-front-end-6dbf67bffd-qrxxz    1/1     Running   0          119s    192.168.235.152   worker1   <none>           <none>
+visweb-frontend-68ff5df788-w68wz     1/1     Running   0          61s     192.168.189.102   worker2   <none>           <none>
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get nodes
+NAME            STATUS   ROLES           AGE   VERSION
+control-plane   Ready    control-plane   35d   v1.25.3
+worker1         Ready    <none>          35d   v1.25.3
+worker2         Ready    <none>          35d   v1.25.3
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+```
+
+### scaling pod horizentally using deployment 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy 
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb-front-end     1/1     1            1           9m14s
+atulweb-front-end     1/1     1            1           7m20s
+mkjweb-front-end      1/1     1            1           8m17s
+vijaypweb-front-end   1/1     1            1           2m24s
+visweb-frontend       1/1     1            1           7m19s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  scale deployment ashuweb-front-end  --replicas=3
+deployment.apps/ashuweb-front-end scaled
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy 
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb-front-end     2/3     3            2           11m
+atulweb-front-end     1/1     1            1           9m40s
+mkjweb-front-end      1/1     1            1           10m
+vijaypweb-front-end   1/1     1            1           4m44s
+visweb-frontend       1/1     1            1           9m39s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy 
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+ashuweb-front-end     3/3     3            3           11m
+atulweb-front-end     1/1     1            1           9m44s
+mkjweb-front-end      1/1     1            1           10m
+vijaypweb-front-end   1/1     1            1           4m48s
+visweb-frontend       1/1     1            1           9m43s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get po -o wide
+NAME                                  READY   STATUS    RESTARTS   AGE     IP                NODE      NOMINATED NODE   READINESS GATES
+ashuweb-front-end-656fb5f6d7-hjqf8    1/1     Running   0          16s     192.168.189.92    worker2   <none>           <none>
+ashuweb-front-end-656fb5f6d7-sjmmf    1/1     Running   0          11m     192.168.235.154   worker1   <none>           <none>
+ashuweb-front-end-656fb5f6d7-vbpqh    1/1     Running   0          16s     192.168.235.159   worker1   <none>           <none>
+atulweb-front-end-dcc5486c8-qmbnd     1/1   
+```
+
+
 
