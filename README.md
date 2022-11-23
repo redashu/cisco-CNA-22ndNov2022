@@ -117,3 +117,17 @@ CONTAINER ID   IMAGE        COMMAND                CREATED         STATUS       
 34b393c7c672   ashuapp:v1   "httpd -DFOREGROUND"   4 seconds ago   Up 3 seconds   0.0.0.0:1234->80/tcp, :::1234->80/tcp   ashuwebapp1
 ```
 
+### Understanding one More CNA -- standard for container images -- OCI 
+
+<img src="oci.png">
+
+### journey of application Design and deployment 
+
+<img src="appd.png">
+
+## k8s and CLoud nativ kubernetes 
+
+<img src="knativ.png">
+
+
+
