@@ -294,6 +294,46 @@ ashuweb-front-end-656fb5f6d7-sjmmf    1/1     Running   0          11m     192.1
 ashuweb-front-end-656fb5f6d7-vbpqh    1/1     Running   0          16s     192.168.235.159   worker1   <none>           <none>
 atulweb-front-end-dcc5486c8-qmbnd     1/1   
 ```
+### deploy webapp 
 
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  create  deployment  ashu-app-web  --image=adminer --port 8080 --dry-run=client -o yaml >adminer.yaml 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  apply -f adminer.yaml 
+deployment.apps/ashu-app-web created
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy 
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+ankitweb-front-end    1/1     1            1           32m
+ashu-app-web          0/1     1            0           4s
+atulcluster           2/2     2            2           25m
+leniweb-front-end     0/1     1            0           14m
+mkjadmnr              2/2     2            2           22m
+tejuweb-front-end     3/3     3            3           33m
+vijaypweb-front-end   2/2     2            2           18m
+visadminer-1          2/2     2            2           25m
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl scale deployment ashu-app-web --replicas=2
+deployment.apps/ashu-app-web scaled
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy 
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+ankitweb-front-end    1/1     1            1           32m
+ashu-app-web          2/2     2            2           58s
+```
+
+### creating internal LB in k8s using Service Resources 
+
+<img src="svc.png">
+
+### creating service 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  expose deployment ashu-app-web  --type LoadBalancer --port 8080 --dry-run=client -o yaml >load_bal.yaml
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  apply -f load_bal.yaml 
+service/ashu-app-web created
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  service 
+NAME           TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+ashu-app-web   LoadBalancer   10.100.207.138   <pending>     8080:32371/TCP   10s
+kubernetes     ClusterIP      10.96.0.1        <none>        443/TCP          61m
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+
+```
 
 
