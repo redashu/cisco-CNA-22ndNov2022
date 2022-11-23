@@ -129,5 +129,40 @@ CONTAINER ID   IMAGE        COMMAND                CREATED         STATUS       
 
 <img src="knativ.png">
 
+### COntainer RUNTIME Interface 
+
+<img src="cri.png">
+
+### Pushing image to Registry server 
+
+<img src="push.png">
+
+### pushing image to container registry -Docker hub 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ docker  tag  ashuapp:v1   docker.io/dockerashu/ashuapp:v1  
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ docker login 
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: dockerashu
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[ashu@ip-172-31-16-246 ashu-container-apps]$ docker push docker.io/dockerashu/ashuapp:v1 
+The push refers to repository [docker.io/dockerashu/ashuapp]
+7ce885c8fb74: Pushed 
+8402448e869e: Pushed 
+2d3586eacb61: Mounted from library/oraclelinux 
+v1: digest: sha256:0b75085a73b2ec906b294827a51517b3c32024b4891dcf554f4f386e164ada80 size: 952
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ docker logout 
+Removing login credentials for https://index.docker.io/v1/
+```
+
 
 
