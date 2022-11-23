@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-db
+  name: ashu-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-db
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-db
+    spec:
+      containers:
+      - image: docker.io/dockerashu/ashudb:1.0
+        name: ashudb
+        ports:
+        - containerPort: 3306
+        env: # to set some values in deployment 
+        - name: MYSQL_ROOT_PASSWORD
+          value: "Cisco@098#" # vault / secret 
+        resources: {}
+status: {}
