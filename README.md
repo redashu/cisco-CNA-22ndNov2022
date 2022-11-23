@@ -336,4 +336,71 @@ kubernetes     ClusterIP      10.96.0.1        <none>        443/TCP          61
 
 ```
 
+### creating db using YAML in k8s pod 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-db
+  name: ashu-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-db
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-db
+    spec:
+      containers:
+      - image: docker.io/dockerashu/ashudb:1.0
+        name: ashudb
+        ports:
+        - containerPort: 3306
+        env: # to set some values in deployment 
+        - name: MYSQL_ROOT_PASSWORD
+          value: "Cisco@098#"
+        resources: {}
+status: {}
+
+```
+
+### lets deploy it 
+
+```
+ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy  |   grep ashu
+ashu-app-web          2/2     2            2           76m
+ashu-db               1/1     1            1           3m30s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get po  |   grep ashu
+ashu-app-web-9796fb4f8-2db5n           1/1     Running            0              76m
+ashu-app-web-9796fb4f8-bw745           1/1     Running            0              76m
+ashu-db-7767855ddd-pq2kj               1/1     Running            0              32s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+
+
+```
+
+### creating service for DB type 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl   get  deploy  |   grep ashu
+ashu-app-web          2/2     2            2           82m
+ashu-db               1/1     1            1           9m17s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  expose deploy ashu-db --type ClusterIP --port 3306 --dry-run=client -o yaml >dbsvc.yaml 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl apply -f dbsvc.yaml 
+service/ashu-db created
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get  svc |  grep ashu
+ashu-app-web          LoadBalancer   10.100.207.138   <pending>     8080:32371/TCP   73m
+ashu-db               ClusterIP      10.111.115.239   <none>        3306/TCP         6s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+
+```
+
+
 
