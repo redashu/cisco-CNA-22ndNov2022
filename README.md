@@ -85,5 +85,48 @@ spec:
               number: 8080 # internal service name 
 ```
 
+### Deploy and check 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl apply -f ashu-ingress-rule.yaml 
+ingress.networking.k8s.io/ashu-app-route-rule created
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get  ingress
+NAME                  CLASS   HOSTS             ADDRESS   PORTS   AGE
+ashu-app-route-rule   nginx   me.ashutoshh.in             80      10s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get  ingress
+NAME                  CLASS   HOSTS             ADDRESS   PORTS   AGE
+ashu-app-route-rule   nginx   me.ashutoshh.in             80      26s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get  ingress
+NAME                  CLASS   HOSTS             ADDRESS         PORTS   AGE
+ashu-app-route-rule   nginx   me.ashutoshh.in   172.31.39.221   80      76s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ 
+
+```
+
+### autoscale -- pod -replica 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  autoscale deployment ashu-app  --cpu-percent=70  --min=3 --max=20 --dry-run=client  -o yaml >ashu_app_autoscale.yaml 
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl get deploy 
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+ankit-app1   1/1     1            1           55m
+ashu-app     1/1     1            1           60m
+atul-app     1/1     1            1           58m
+leni-app     1/1     1            1           55m
+mkj-app      1/1     1            1           58m
+teju-app     1/1     1            1           57m
+vijay-app    1/1     1            1           56m
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  apply -f ashu_app_autoscale.yaml 
+horizontalpodautoscaler.autoscaling/ashu-app created
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get  hpa
+NAME       REFERENCE             TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+ashu-app   Deployment/ashu-app   <unknown>/70%   3         20        0          7s
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get  hpa
+NAME         REFERENCE               TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+ankit-app1   Deployment/ankit-app1   <unknown>/70%   3         20        1          16s
+ashu-app     Deployment/ashu-app     <unknown>/70%   3         20        1          24s
+```
+
+
 
 
