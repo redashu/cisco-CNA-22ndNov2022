@@ -198,6 +198,18 @@ kubernetes     ClusterIP      10.96.0.1        <none>                           
 leni-app-lb    ClusterIP      10.108.74.24     <none>                                               8080/TCP   155m
 mkj-app-lb     ClusterIP      
 ```
+### even after CNA and many other technology we need time to implement and co-ordinate things 
+
+<img src="prob11.png">
+
+### Introduction Devops 
+
+<img src="devops.png">
+
+### DEvops | SRE | DevsecOPS
+
+<img src="sre.png">
+
 
 
 
