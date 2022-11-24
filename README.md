@@ -210,6 +210,47 @@ mkj-app-lb     ClusterIP
 
 <img src="sre.png">
 
+## Implement CICD -- 
+
+### we are taking code -- will be updated by developer
+
+```
+[ashu@ip-172-31-16-246 ashu-cisco-webUI]$ ls
+cicd.png  Dockerfile  index.html  README.md
+[ashu@ip-172-31-16-246 ashu-cisco-webUI]$ git  add  . 
+[ashu@ip-172-31-16-246 ashu-cisco-webUI]$ git commit -m "app version 1"
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <ashu@ip-172-31-16-246.ec2.internal>) not allowed
+[ashu@ip-172-31-16-246 ashu-cisco-webUI]$ git config --global user.email ashutoshh@linux.com 
+[ashu@ip-172-31-16-246 ashu-cisco-webUI]$ git config --global user.name redashu
+[ashu@ip-172-31-16-246 ashu-cisco-webUI]$ git commit -m "capp version 1"
+[master 9ee7edb] capp version 1
+ 3 files changed, 20 insertions(+)
+ create mode 100644 Dockerfile
+ create mode 100644 cicd.png
+ create mode 100644 index.html
+[ashu@ip-172-31-16-246 ashu-cisco-webUI]$ git push 
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (5/5), 31.95 KiB | 15.97 MiB/s, done.
+Total 5 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/redashu/ashu-cisco-webUI.git
+   a896fe4..9ee7edb  master -> master
+```
+
 
 
 
