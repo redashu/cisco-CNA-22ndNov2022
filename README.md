@@ -127,6 +127,79 @@ ankit-app1   Deployment/ankit-app1   <unknown>/70%   3         20        1      
 ashu-app     Deployment/ashu-app     <unknown>/70%   3         20        1          24s
 ```
 
+### Understanding DB problem 
+
+<img src="db.png">
+
+### creating External Name service to access outside k8s Resources like Database 
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl create  service externalname  ashu-db-lb  --external-name cisco-db.c6lnrmxmads2.ap-south-1.rds.amazonaws.com  --tcp 3306:3306  --dry-run=client -o yaml 
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-db-lb
+  name: ashu-db-lb
+spec:
+  externalName: cisco-db.c6lnrmxmads2.ap-south-1.rds.amazonaws.com
+  ports:
+  - name: 3306-3306
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: ashu-db-lb
+  type: ExternalName
+status:
+  loadBalancer: {}
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl create  service externalname  ashu-db-lb  --external-name cisco-db.c6lnrmxmads2.ap-south-1.rds.amazonaws.com  --tcp 3306:3306  --dry-run=client -o yaml  >externalsvc.yaml
+```
+
+### lets modify things 
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-db-lb
+  name: ashu-db-lb
+spec:
+  externalName: cisco-db.c6lnrmxmads2.ap-south-1.rds.amazonaws.com
+  ports:
+  - name: 3306-3306
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  #selector: # remove / comment this field 
+  #  app: ashu-db-lb
+  type: ExternalName
+  sessionAffinity: ClientIP # session sticky from Multi Pod to external DB 
+status:
+  loadBalancer: {}
+
+```
+
+### creating it
+
+```
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl apply -f externalsvc.yaml 
+service/ashu-db-lb created
+[ashu@ip-172-31-16-246 ashu-container-apps]$ kubectl  get  svc 
+NAME           TYPE           CLUSTER-IP       EXTERNAL-IP                                          PORT(S)    AGE
+ankit-app-lb   ClusterIP      10.106.233.213   <none>                                               8080/TCP   156m
+ashu-app-lb    ClusterIP      10.97.239.123    <none>                                               8080/TCP   160m
+ashu-db-lb     ExternalName   <none>           cisco-db.c6lnrmxmads2.ap-south-1.rds.amazonaws.com   3306/TCP   9s
+atul-app-lb    ClusterIP      10.102.151.53    <none>                                               8080/TCP   159m
+kubernetes     ClusterIP      10.96.0.1        <none>                                               443/TCP    3h29m
+leni-app-lb    ClusterIP      10.108.74.24     <none>                                               8080/TCP   155m
+mkj-app-lb     ClusterIP      
+```
+
+
 
 
 
