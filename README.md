@@ -40,4 +40,14 @@ curl -f http://localhost:1234/health.html
 docker rm ashuapptest -f  &>/dev/null
 ```
 
+### understanding pipepline jobs 
+
+<img src="pipeline.png">
+
+## Overall Devops CICD pipeline Understanding 
+
+<img src="cicd.png">
+
+
+
 
