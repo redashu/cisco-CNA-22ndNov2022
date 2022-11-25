@@ -277,4 +277,118 @@ aws_instance.myec2vm: Creating...
 aws_instance.myec2vm: Still creating... [10s elapsed]
 ```
 
+## Destroy resources 
+
+```
+[ashu@ip-172-31-16-246 aws-infra]$ terraform destroy 
+aws_instance.myec2vm: Refreshing state... [id=i-0df3fbf09d83875d7]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following
+symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_instance.myec2vm will be destroyed
+  - resource "aws_instance" "myec2vm" {
+      - ami                                  = "ami-0b0dcb5067f052a63" -> null
+      - arn                                  = "arn:aws:ec2:us-east-1:751136288263:instance/i-0df3fbf09d83875d7" -> null
+      - associate_public_ip_address          = true -> null
+      - availability_zone                    = "us-east-1b" -> null
+      - cpu_core_count                       = 1 -> null
+      - cpu_threads_per_core                 = 1 -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - id                                   = "i-0df3fbf09d83875d7" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t2.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - key_name                             = "ashu-cisco-key" -> null
+      - monitoring                           = false -> null
+      - primary_network_interface_id         = "eni-0562d607fd71c8946" -> null
+      - private_dns                          = "ip-172-31-23-74.ec2.internal" -> null
+      - private_ip                           = "172.31.23.74" -> null
+      - public_dns                           = "ec2-54-81-112-246.compute-1.amazonaws.com" -> null
+      - public_ip                            = "54.81.112.246" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [
+          - "default",
+        ] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-09d3a6a43989df57c" -> null
+      - tags                                 = {
+          - "Name" = "ashu-vm-by-terraform"
+        } -> null
+      - tags_all                             = {
+          - "Name" = "ashu-vm-by-terraform"
+        } -> null
+      - tenancy                              = "default" -> null
+      - user_data_replace_on_change          = false -> null
+      - vpc_security_group_ids               = [
+          - "sg-05c14cfab5ff1fd6c",
+        ] -> null
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - credit_specification {
+          - cpu_credits = "standard" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_put_response_hop_limit = 1 -> null
+          - http_tokens                 = "optional" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/xvda" -> null
+          - encrypted             = false -> null
+          - iops                  = 100 -> null
+          - tags                  = {} -> null
+          - throughput            = 0 -> null
+          - volume_id             = "vol-06cd953083f8daa4e" -> null
+          - volume_size           = 8 -> null
+          - volume_type           = "gp2" -> null
+        }
+    }
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+aws_instance.myec2vm: Destroying... [id=i-0df3fbf09d83875d7]
+aws_instance.myec2vm: Still destroying... [id=i-0df3fbf09d83875d7, 10s elapsed]
+aws_instance.myec2vm: Still destroying... [id=i-0df3fbf09d83875d7, 20s elapsed]
+aws_instance.myec2vm: Destruction complete after 30s
+
+Destroy complete! Resources: 1 destroyed.
+```
+
 
