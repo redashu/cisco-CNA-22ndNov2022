@@ -30,4 +30,14 @@ To https://github.com/redashu/ashu-cisco-webUI.git
 ```
 
 
+### jenkins container app testing job content 
+
+```
+docker rm ashuapptest -f  &>/dev/null
+docker run -d --name ashuapptest -p 1234:80  `cat /tmp/ashu.txt`
+sleep 2
+curl -f http://localhost:1234/health.html
+docker rm ashuapptest -f  &>/dev/null
+```
+
 
